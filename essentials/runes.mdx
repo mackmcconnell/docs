@@ -5,13 +5,16 @@ icon: 'recycle'
 
 `Runes` are pre-built datasets you can use in your queries, making writing your queries a little easier.
 
-For example, pretend you want to query all HubSpot users on the web for some specific information (_which of them use Hubspot chat?_). You can simply query the Rune and get on with your query!
+For example, pretend you want to query for all companies using [Postscript](https://postscript.io/), but only the ones on [Shopify](https://shopify.com/). You can simply query the Shopify rune like so:
 
+```SQL Example_query.sql
+SELECT distinct domain
+FROM http_responses
+WHERE lower(body) LIKE '%src="https://static.hotjar.com/%'
+OR lower(body) LIKE '%src="https://script.hotjar.com/%';
+```
 
 Our team has built hundreds of Runes and we're adding new ones every week.
 Something you want to see Rune-ified? Simply tell us and we'll prioritize it.
 
 
-```SQL Example_query.sql
-
-```
