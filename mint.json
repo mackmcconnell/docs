@@ -5,7 +5,7 @@
     "dark": "/logo/dark.svg",
     "light": "/logo/light.svg"
   },
-  "favicon": "/favicon.svg",
+  "favicon": "/favicon.png",
   "colors": {
     "primary": "#1064fe",
     "light": "#62bfff",
@@ -56,11 +56,12 @@
     {
       "group": "API Documentation",
       "pages": [
-        "api-reference/introduction"
+        "api-reference/introduction",
+        "api-reference/authentication"
       ]
     },
     {
-      "group": "Endpoint Examples",
+      "group": "API Endpoints",
       "pages": [
         "api-reference/endpoint/get",
         "api-reference/endpoint/create",
