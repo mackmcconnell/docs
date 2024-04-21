@@ -1,11 +1,12 @@
 {
   "$schema": "https://mintlify.com/schema.json",
   "name": "Markix Documentation",
+  "openapi": "api-reference/openapi.json",
   "logo": {
     "dark": "/logo/dark.svg",
     "light": "/logo/light.svg"
   },
-  "favicon": "/favicon.png",
+  "favicon": "/favicon.svg",
   "colors": {
     "primary": "#1064fe",
     "light": "#62bfff",
