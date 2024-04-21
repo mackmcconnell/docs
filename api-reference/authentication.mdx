@@ -1,0 +1,54 @@
+---
+title: "Authentication"
+---
+
+## Overview
+
+Markix uses API keys to authenticate requests to the API. API keys can be
+managed in your [account settings](). Each request to the API must include a
+valid bearer token.
+
+## Obtaining Your Bearer Token
+
+1. **Log in to your Markix account.** Navigate to your account settings or the
+   API section.
+2. **Generate a new API token.** Follow the instructions to create a new token.
+   This token will represent your API credentials.
+3. **Keep your token secure.** Treat your token like a password. Do not share it
+   and store it securely.
+
+## Making Authenticated Requests
+
+Include your bearer token in the HTTP authorization header or as a query
+parameter when making requests to the API. Here is an example of how to include
+the authorization header in a request:
+
+<Tabs>
+  <Tab title="Header-based Authentication">
+    Include the bearer token in the `Authorization` header of your request:
+
+    ```bash
+    curl -X GET "https://api.markix.io/v1/queries" \
+         -H "Authorization: Bearer YOUR_API_TOKEN"
+    ```
+  </Tab>
+
+  <Tab title="Query Parameter Authentication">
+    Alternatively, you can include the token as a query parameter in the URL:
+
+    ```bash
+    curl -X GET "https://api.markix.io/v1/queries?token=YOUR_API_TOKEN
+    ```
+  </Tab>
+</Tabs>
+
+## Troubleshooting
+
+If you encounter issues with authentication:
+
+- Ensure the bearer token is correctly formatted and included in the
+  authorization header.
+- Verify that the token has not expired or been revoked.
+- Check for any IP restrictions or additional security measures that might be
+  blocking your requests.
+- If you continue to experience issues, contact our support for assistance.

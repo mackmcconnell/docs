@@ -1,8 +1,8 @@
 {
   "openapi": "3.0.1",
   "info": {
-    "title": "OpenAPI Plant Store",
-    "description": "A sample API that uses a plant store as an example to demonstrate features in the OpenAPI specification",
+    "title": "Markix OpenAPI Specification",
+    "description": "This is the OpenAPI specification for the Markix API. It is a RESTful API that allows users to interact with the Markix platform.",
     "license": {
       "name": "MIT"
     },
@@ -10,7 +10,7 @@
   },
   "servers": [
     {
-      "url": "http://sandbox.mintlify.com"
+      "url": "https://api.markix.com"
     }
   ],
   "security": [
@@ -19,29 +19,18 @@
     }
   ],
   "paths": {
-    "/plants": {
+    "/queries": {
       "get": {
-        "description": "Returns all plants from the system that the user has access to",
-        "parameters": [
-          {
-            "name": "limit",
-            "in": "query",
-            "description": "The maximum number of results to return",
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
+        "description": "Returns a list of your queries. The queries are returned sorted by creation date, with the most recent query appearing first.",
         "responses": {
           "200": {
-            "description": "Plant response",
+            "description": "Returns a list of queries.",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/Plant"
+                    "$ref": "#/components/schemas/Query"
                   }
                 }
               }
@@ -58,61 +47,24 @@
             }
           }
         }
-      },
-      "post": {
-        "description": "Creates a new plant in the store",
-        "requestBody": {
-          "description": "Plant to add to the store",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/NewPlant"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "plant response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Plant"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          }
-        }
       }
     },
-    "/plants/{id}": {
-      "delete": {
-        "description": "Deletes a single plant based on the ID supplied",
+    "/queries/{id}": {
+      "get": {
+        "description": "Retrieves a query by ID.",
         "parameters": [
           {
             "name": "id",
             "in": "path",
-            "description": "ID of plant to delete",
+            "description": "ID of query to retrieve",
             "required": true,
             "schema": {
-              "type": "integer",
-              "format": "int64"
+              "type": "string"
             }
           }
         ],
         "responses": {
-          "204": {
+          "200": {
             "description": "Plant deleted",
             "content": {}
           },
@@ -128,45 +80,244 @@
           }
         }
       }
-    }
-  },
-  "components": {
-    "schemas": {
-      "Plant": {
-        "required": [
-          "name"
-        ],
-        "type": "object",
-        "properties": {
-          "name": {
-            "description": "The name of the plant",
-            "type": "string"
-          },
-          "tag": {
-            "description": "Tag to specify the type",
-            "type": "string"
+    },
+    "/queries/{id}/export": {
+      "get": {
+        "description": "Exports the results of a query execution as a CSV file.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of query to export",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
           }
-        }
-      },
-      "NewPlant": {
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/Plant"
+        ],
+
+        "responses": {
+          "200": {
+            "description": "Returns a CSV file with the results of the latest completed query execution.",
+            "content": {
+              "text/csv": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
           },
-          {
-            "required": [
-              "id"
-            ],
-            "type": "object",
-            "properties": {
-              "id": {
-                "description": "Identification number of the plant",
-                "type": "integer",
-                "format": "int64"
+          "400": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
               }
             }
           }
-        ]
+        }
+      }
+    },
+    "/executions/{id}": {
+      "get": {
+        "description": "Retrieves a query execution by ID.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of query execution to retrieve",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns a query execution.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QueryExecution"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "description": "Cancels a running query execution by ID.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of query execution to cancel",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Query execution deleted",
+            "content": {}
+          },
+          "400": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+
+  },
+  "components": {
+    "schemas": {
+      "QueryExecution": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Unique identifier for the query execution"
+          },
+          "object": {
+            "type": "string",
+            "enum": [
+              "query_execution"
+            ],
+            "description": "Object type identifier"
+          },
+          "status": {
+            "type": "string",
+            "description": "Current status of the execution"
+          },
+          "status_message": {
+            "type": "string",
+            "description": "Message describing the current status"
+          },
+          "started_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Timestamp when the execution started"
+          },
+          "scheduled": {
+            "type": "boolean",
+            "description": "Indicates if the execution was scheduled"
+          },
+          "diffed": {
+            "type": "boolean",
+            "description": "Indicates if the result was compared with another set of results"
+          },
+          "ended_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Timestamp when the execution ended"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Timestamp when the execution was created"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Timestamp when the execution was last updated"
+          },
+          "result": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "description": "Individual data points from the execution result"
+                },
+                "description": "Data generated from the execution"
+              },
+              "total": {
+                "type": "integer",
+                "description": "Total count of data points in the result"
+              }
+            },
+            "description": "Result of the query execution if available"
+          }
+        }
+      },
+      "Query": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Unique identifier for the query"
+          },
+          "name": {
+            "type": "string",
+            "description": "Name of the query"
+          },
+          "user_id": {
+            "type": "integer",
+            "description": "Identifier of the user who owns the query"
+          },
+          "description": {
+            "type": "string",
+            "description": "Detailed description of the query"
+          },
+          "query": {
+            "type": "string",
+            "description": "SQL or other query string"
+          },
+          "executions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/QueryExecution"
+            },
+            "description": "List of executions associated with the query, loaded conditionally"
+          },
+          "diffable": {
+            "type": "boolean",
+            "description": "Indicates whether the query results are suitable for diff operations"
+          },
+          "schedule": {
+            "type": "string",
+            "description": "Schedule on which the query is run, if applicable"
+          },
+          "public": {
+            "type": "boolean",
+            "description": "Indicates if the query is public"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Timestamp when the query was created"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Timestamp when the query was last updated"
+          }
+        }
       },
       "Error": {
         "required": [
