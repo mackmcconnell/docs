@@ -44,7 +44,9 @@
     {
       "group": "Essentials",
       "pages": [
-        "essentials/runes"
+        "essentials/runes",
+        "essentials/credits",
+        "essentials/integrations"
       ]
     },
     {
