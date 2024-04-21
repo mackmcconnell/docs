@@ -1,0 +1,43 @@
+---
+title: 'Credits System on Markix'
+description: 'How credits work on Markix'
+icon: 'money-bills-simple'
+---
+
+Your usage of Markix relies on a credit system. This guide will explain how credits work, how they're consumed and managed.
+
+---
+## What are Credits?
+Credit's are Markix's platform currency, allowing executions and data access via the API. In short, larger queries consume more credits.
+
+Every month your credits will replenished, according to your plan. Unused credits do not carry forward into future months.
+
+For teams using Markix, credits are shared among an entire team, not per-user.
+
+---
+## One credit, one data-point
+One credit counts as one row spanning one column. For example, if your query simply returns a list of domains (one column), the number of credits your query will have used will be equal to the number of rows. If your query returns two columns, each row will cost two credits.
+It's important to understand how credits work. If anything is unclear please reach out to our team for a further explanation.
+
+---
+## What Consumes Credits?
+- Executing queries (Web Interface or API)
+- Scheduling queries (Web Interface or API)
+
+---
+## Interrupting query execution
+After running a query in the Web Interface, you can stop the query prior to execution. At this point your query will also stop spending credits and you will have only spent what the query required until you stopped the query.
+
+---
+## Managing Your Credits
+Your current credit usage is indicated in the top right of the Query view.
+<img
+  style={{ borderRadius: '0.5rem' }}
+  src="/images/query-editor-annotated-screenshot-credits.jpg"
+/>
+
+---
+### Need more credits?
+If you need additional credits beyond your plan’s allocation, reach out via our website's contact form and we can add more to your account.
+
+

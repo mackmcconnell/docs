@@ -19,7 +19,7 @@
   "topbarLinks": [
     {
       "name": "Support",
-      "url": "mailto:support@markix.com"
+      "url": "mailto:hello@markix.com"
     }
   ],
   "topbarCtaButton": {
@@ -39,13 +39,15 @@
       "group": "Get Started",
       "pages": [
         "introduction",
-        "accessing-Markix"
+        "usage-guide"
       ]
     },
     {
       "group": "Essentials",
       "pages": [
-        "essentials/runes"
+        "essentials/runes",
+        "essentials/credits",
+        "essentials/integrations"
       ]
     },
     {
