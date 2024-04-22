@@ -57,6 +57,14 @@
         "api-reference/authentication"
       ]
     },
+
+    {
+      "group": "Scenarios",
+      "pages": [
+        "api-reference/scenarios/prospecting-platform"
+      ]
+    },
+
     {
       "group": "API Endpoints",
       "pages": [

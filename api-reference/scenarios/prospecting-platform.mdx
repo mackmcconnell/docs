@@ -1,0 +1,131 @@
+---
+title: Data Warehouse Integration
+---
+
+## Overview
+
+This guide will walk you through the process of integrating Markix with your
+data warehouse. You will learn how to write and schedule queries, set up
+webhooks that notify when a scheduled query completes, and finally, how to
+import query results into your data warehouse.
+
+## Example Scenario
+
+Imagine you're offering a prospecting platform where users can search for
+potential business leads. Markix does the hard work of providing fresh, relevant
+lead information, which you can then import into your data warehouse. Having
+data on-premises minimizes dependencies on external services and improves
+response times, crucial for platforms where speed and data freshness directly
+impact user success and satisfaction.
+
+## Prerequisites
+
+Before you start, you need to have the following:
+
+- A Markix account
+- Write-access to your data warehouse
+
+<Steps>
+    <Step title="Writing a Query">
+        Start by writing a query in Markix to extract the specific data you need:
+
+        1. **Create or Open an Existing Query:** Log into your Markix account and [navigato to Queries](https://app.markix.com/queries). Select an existing query or [create a new one](https://app.markix.com/queries/create).
+        2. **Write Your Query:** Use the SQL editor to write your query. For instance, to simply get all the Webflow sites:
+
+        ```sql
+        -- Returns all Webflow sites
+        SELECT * FROM rune_webflow
+
+        -- Optionally include a limit to test the query first
+        -- LIMIT 10
+        ```
+
+        3. **Test and Save Your Query:** Execute the query to ensure it returns the correct data, then save it.
+    </Step>
+
+
+    <Step title="Scheduling the Query">
+        Automate your data extraction by scheduling your query:
+
+        1. **Open the Schedule Modal:** In the Query Editor, click on the “Schedule” button for your saved query.
+        2. **Set the Schedule:** Choose how often you want the query to run (e.g., hourly, daily).
+        3. **Save the Schedule:** Confirm the details and save your schedule.
+    </Step>
+
+    <Step title="Configuring a Webhook">
+        Use a webhook to get real-time notifications when your query has new results:
+
+        1. **Add a Webhook URL:** In the Schedule Modal, find the webhook section and enter the URL of your data warehouse API where data should be sent.
+        2. **Configure Webhook Settings:** Specify any additional headers or data formats required by your data warehouse.
+        3. **Activate the Webhook:** Save the configuration to start receiving data on your scheduled intervals.
+
+        Next, ensure that your application is set up to receive webhooks and
+        process the data sent by Markix.
+
+        The notification webhook we care about looks like this:
+
+        ```json
+        {
+            "created_at": "2021-09-01T12:00:00Z",
+            "type": "query.execution.updated",
+            "data": {
+                "object": {
+                    "id": "a1b2c3d4",
+                    "object": "query_execution",
+                    "status": "completed",
+                    "status_message": null,
+                    "started_at": "2021-09-01T12:00:00Z",
+                    "ended_at": "2021-09-01T12:01:00Z",
+                    "scheduled": true,
+                    "diffed": false,
+                    "created_at": "2021-09-01T12:00:00Z",
+                    "updated_at": "2021-09-01T12:01:00Z",
+                    "result": {
+                        "total": 100,
+                        "data": [...]
+                    }
+                }
+            },
+            "object": "event"
+        }
+        ```
+
+        Pay special attention to the `status` field in the webhook payload to
+        confirm that the query execution has successfully completed. Also,
+        if you only care about scheduled or manual executions, you can filter
+        the webhooks by the `scheduled` field. The `diffed` field indicates
+        whether a changeset was generated for the query results, which only
+        contains additions and deletions since the last execution.
+    </Step>
+
+    <Step title="Receive a Webhook">
+        
+
+        
+    </Step>
+
+     <Step title="Receive a Webhook, and Request an Export">
+        Once you receive a webhook notification, confirm that the query
+        execution has successfully completed by checking the `status` field in
+        the webhook payload.
+
+        Next, request an export of the query results:
+
+        Use the Export API Endpoint: Send a GET request to the export endpoint with your query ID:
+        ```http
+        GET /api/queries/12345/export
+        Authorization: Bearer YOUR_ACCESS_TOKEN
+        ```
+        Choose the Format: Specify the format you need, such as CSV or JSON, to match your data warehouse’s requirements.
+
+    </Step>
+
+     <Step title="Importing Data into Your Warehouse">
+        Finally, import the data into your data warehouse:
+
+        If your application is set up to receive webhooks, make sure to 
+        
+    </Step>
+</Steps>
+
+By following these steps, you can seamlessly integrate Markix with your data warehouse, automating data extraction and importation, and enhancing your data-driven decision-making.
